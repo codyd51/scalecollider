@@ -44,12 +44,14 @@ class Scale:
         self.notes = self._generate_scale(root_note, interval)
 
     @classmethod
-    def get_all_note_names(cls):
+    def get_all_tonic_notes(cls):
         """Return every possible note which is suitable as the root note of a key.
         """
-        # For now, returns every known name for every pitch
+        # Get every known enharmonic name for every pitch
         all_possible_notes = [x for sublist in cls._ENHARMONIC_NOTES.values() for x in sublist]
-        return all_possible_notes
+        # Only use naturals, sharps, and flats as scale tonics
+        tonic_notes = [x for x in all_possible_notes if '##' not in x and 'bb' not in x]
+        return tonic_notes
 
     def _next_note(self, prev_note: str) -> str:
         """Find the next letter-note name in the scale, after prev_note.
@@ -108,7 +110,7 @@ if __name__ == '__main__':
     seen_scales = []
 
     diatonic_intervals = get_diatonic_intervals()
-    all_root_notes = Scale.get_all_note_names()
+    all_root_notes = Scale.get_all_tonic_notes()
     print(f'Generating scales from {len(all_root_notes)} enharmonic root notes...')
     for diatonic_interval in diatonic_intervals:
         for note in all_root_notes:
@@ -132,7 +134,10 @@ if __name__ == '__main__':
                 break
 
             if scale1.has_same_notes(scale2):
-                print(f'Found collision!\nScale 1: {scale1}\nScale 2: {scale2}')
+                # print(f'Found collision!\nScale 1: {scale1}\nScale 2: {scale2}')
                 collisions.append((scale1, scale2))
 
     print(f'Found {len(collisions)} collisions')
+    print(f'There exists {len(seen_scales) - len(collisions)} '
+          f'diatonic scales from the tonic notes: {", ".join(all_root_notes)}')
+
