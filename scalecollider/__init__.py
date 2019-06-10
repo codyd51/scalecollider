@@ -127,6 +127,9 @@ if __name__ == '__main__':
             # Don't check a scale against itself
             if scale1 == scale2:
                 continue
+            # Don't compare if we've already seen this scale combination before
+            if (scale1, scale2) in collisions or (scale2, scale1) in collisions:
+                break
 
             if scale1.has_same_notes(scale2):
                 print(f'Found collision!\nScale 1: {scale1}\nScale 2: {scale2}')
