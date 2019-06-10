@@ -93,7 +93,6 @@ class Scale:
             else:
                 raise RuntimeError(f'Needed a {next_note_letter} ({previous_note} + interv) '
                                    f'in {starting_note} {scale_interval}: {", ".join(scale_notes)}')
-        scale_notes.append(starting_note)
         return scale_notes
 
     def has_same_notes(self, other: 'Scale') -> bool:
